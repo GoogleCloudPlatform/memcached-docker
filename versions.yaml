@@ -1,0 +1,13 @@
+versions:
+  - dir: 'debian'
+    repo: memcached1439
+    tags:
+      - '1.4.39'
+      - '1.4'
+      - '1'
+      - latest
+    from: &from gcr.io/google-appengine/debian8
+    packages:
+      memcached:
+        version: '1.4.39'
+        sha1: '9d6f77f4f9f1b50289882fd88851dece7699c74b'
