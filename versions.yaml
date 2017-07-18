@@ -1,6 +1,6 @@
 versions:
-  - dir: 'debian'
-    repo: memcached1439
+  - dir: '1/1.4'
+    repo: memcached14
     tags:
       - '1.4.39'
       - '1.4'
