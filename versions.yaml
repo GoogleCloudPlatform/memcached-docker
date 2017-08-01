@@ -1,6 +1,6 @@
 versions:
   - dir: '1/1.4'
-    repo: memcached14
+    repo: memcached1
     tags:
       - '1.4.39'
       - '1.4'
