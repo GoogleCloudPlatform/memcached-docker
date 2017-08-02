@@ -1,5 +1,9 @@
 FROM {{ .From }}
 
+# Get the list of packages from the base image.
+COPY download_source /tmp
+RUN /tmp/download_source blacklist-all-current
+
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
 
@@ -38,6 +42,14 @@ RUN set -x \
 		libsasl2-2 \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& memcached -V
+
+# Copy BSD License
+RUN mkdir -p /usr/share/memcached
+COPY LICENSE /usr/share/memcached/
+
+# Download source code for GPL packages.
+RUN /tmp/download_source download /usr/local/src \
+	&& rm /tmp/download_source
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
