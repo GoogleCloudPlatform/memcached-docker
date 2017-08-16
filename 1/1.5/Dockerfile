@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/debian8
+FROM gcr.io/google-appengine/debian9
 
 # Get the list of packages from the base image.
 COPY download_source /tmp
