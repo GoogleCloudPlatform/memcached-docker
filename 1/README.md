@@ -82,6 +82,7 @@ telnet $MEMCACHED_ENDPOINT_IP 11211
 ```
 
 To test if Memcached is working we create a key called MY_TEST_KEY. Run the following command to set a test key.
+
 ```shell
 set MY_TEST_KEY 0 60 4
 pass
@@ -177,6 +178,7 @@ telnet localhost 11211
 ```
 
 To test if Memcached is working we create a key called MY_TEST_KEY. Run the following command to set a test key.
+
 ```shell
 set MY_TEST_KEY 0 60 4
 pass
