@@ -1,13 +1,9 @@
 FROM gcr.io/google-appengine/debian9
 
-# Get the list of packages from the base image.
-COPY download_source /tmp
-RUN /tmp/download_source blacklist-all-current
-
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
-ENV MEMCACHED_VERSION 1.5.0
-ENV MEMCACHED_SHA1 e12af93e63c05ab7e89398e4cfd0bfc7b7bff1c5
+ENV MEMCACHED_VERSION 1.5.1
+ENV MEMCACHED_SHA1 e5b7e4e562eb99fdfa67d71697cc6744d3e9663f
 
 RUN set -x \
 	&& buildDeps=' \
@@ -23,31 +19,24 @@ RUN set -x \
 	' \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends \
 	&& rm -rf /var/lib/apt/lists/* \
+	&& mkdir -p /usr/src/memcached_build \
+	&& mkdir -p /usr/src/memcached \
+	&& cd /usr/src/memcached \
 	&& wget -O memcached.tar.gz "https://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" \
 	&& echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - \
-	&& mkdir -p /usr/src/memcached \
-	&& tar -xzf memcached.tar.gz -C /usr/src/memcached --strip-components=1 \
-	&& rm memcached.tar.gz \
-	&& cd /usr/src/memcached \
+	&& tar -xzf memcached.tar.gz -C /usr/src/memcached_build --strip-components=1 \
+	&& cd /usr/src/memcached_build \
 	&& ./configure \
 		--build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 		--enable-sasl \
 	&& make -j "$(nproc)" \
 	&& make install \
-	&& cd / && rm -rf /usr/src/memcached \
+	&& cd / && rm -rf /usr/src/memcached_build \
 	&& apt-mark manual \
 		libevent-2.0-5 \
 		libsasl2-2 \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& memcached -V
-
-# Copy BSD License
-RUN mkdir -p /usr/share/memcached
-COPY LICENSE /usr/share/memcached/
-
-# Download source code for GPL packages.
-RUN /tmp/download_source download /usr/local/src \
-	&& rm /tmp/download_source
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat

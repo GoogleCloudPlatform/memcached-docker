@@ -27,12 +27,12 @@ versions:
   - dir: '1/1.5'
     repo: memcached1
     tags:
-      - '1.5.0'
+      - '1.5.1'
       - '1.5'
       - '1'
       - latest
     from: &from gcr.io/google-appengine/debian9
     packages:
       memcached:
-        version: '1.5.0'
-        sha1: 'e12af93e63c05ab7e89398e4cfd0bfc7b7bff1c5'
+        version: '1.5.1'
+        sha1: 'e5b7e4e562eb99fdfa67d71697cc6744d3e9663f'
