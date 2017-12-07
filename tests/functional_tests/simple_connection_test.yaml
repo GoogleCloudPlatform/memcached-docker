@@ -14,17 +14,17 @@
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge]
-- command: [docker, run, --net, testbridge, --name, some-memcached, -d, '$IMAGE']
-- command: [docker, run, --net, testbridge, --name, external-container, -dt, debian]
+- command: [docker, run, --net, testbridge, --name, some-memcached-$UNIQUE-id, -d, '$IMAGE']
+- command: [docker, run, --net, testbridge, --name, external-container-$UNIQUE-id, -dt, debian]
 - command: [sleep, 30s]
-- command: [docker, exec, external-container, apt, update]
-- command: [docker, exec, external-container, apt, install, netcat, -y]
+- command: [docker, exec, external-container-$UNIQUE-id, apt, update]
+- command: [docker, exec, external-container-$UNIQUE-id, apt, install, netcat, -y]
 
 teardown:
-- command: [docker, rm, -f, some-memcached]
-- command: [docker, rm, -f, external-container]
+- command: [docker, rm, -f, some-memcached-$UNIQUE-id]
+- command: [docker, rm, -f, external-container-$UNIQUE-id]
 
-target: external-container
+target: external-container-$UNIQUE-id
 tests:
 - name: Can write and read variable
   command:
@@ -33,7 +33,7 @@ tests:
     - 
       ' printf
       "set bar 0 60 9\r\nsome text\r\nget bar\r\nquit\r\n"
-      | netcat -q 1 some-memcached 11211 '
+      | netcat -q 1 some-memcached-$UNIQUE-id 11211 '
   expect:
     stdout:
       equals: "STORED\r\nVALUE bar 0 9\r\nsome text\r\nEND"
