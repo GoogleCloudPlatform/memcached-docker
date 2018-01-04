@@ -1,4 +1,4 @@
-limani-memcached
+memcached-docker
 ============
 
 Dockerfile source for memcached [docker](https://docker.io) image.
