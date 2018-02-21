@@ -23,16 +23,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 
+_variables:
+  from: &from gcr.io/google-appengine/debian9
+
 versions:
   - dir: '1/1.5'
     repo: memcached1
     tags:
-      - '1.5.4'
+      - '1.5.5'
       - '1.5'
       - '1'
-      - latest
-    from: launcher.gcr.io/google/debian9
+      - 'latest'
+    from: *from
     packages:
       memcached:
-        version: '1.5.4'
-        sha1: '29cb75cc234dbaceed6e89db029af8363706f0fe'
+        version: '1.5.5'
+        sha1: '975a5ba57bfc8331bbc3d8f92da969f35a7acf1b'
