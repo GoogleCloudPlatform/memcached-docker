@@ -39,3 +39,6 @@ versions:
       memcached:
         version: '1.5.8'
         sha1: '8db4363728edfce6c665c181f2237c7ea8ba3ea8'
+
+cloudbuild:
+  enable_parallel: true
