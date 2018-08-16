@@ -30,15 +30,15 @@ versions:
   - dir: '1/1.5'
     repo: memcached1
     tags:
-      - '1.5.9'
+      - '1.5.10'
       - '1.5'
       - '1'
       - 'latest'
     from: *from
     packages:
       memcached:
-        version: '1.5.9'
-        sha1: '7d3807ed240597444c97e11b0f61d16964feff1c'
+        version: '1.5.10'
+        sha1: 'fff9351b360a09497cd805d3e4c1ffbe860d067d)'
 
 cloudbuild:
   enable_parallel: true
