@@ -1,7 +1,4 @@
-FROM gcr.io/google-appengine/debian9
-
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -r memcache && useradd -r -g memcache memcache
+FROM gcr.io/google-appengine/debian9 as memcached-builder
 ENV MEMCACHED_VERSION 1.5.12
 ENV MEMCACHED_SHA1 f67096ba64b0c47668bcad5b680010c4f8987d4c
 
@@ -38,7 +35,18 @@ RUN set -x \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& memcached -V
 
+FROM gcr.io/google-appengine/debian9
+
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN groupadd -r memcache && useradd -r -g memcache memcache
+
+COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
+COPY --from=memcached-builder /usr/src/memcached/memcached.tar.gz /usr/src/memcached/memcached.tar.gz
+
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN apt-get update && apt-get install -y \
+      libevent-2.0-5 libsasl2-2 --no-install-recommends && \
+		  rm -rf /var/lib/apt/lists/*
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
