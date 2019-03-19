@@ -14,11 +14,11 @@
 
 setup:
 - command: [docker, network, create, -d, bridge, testbridge-$UNIQUE-id]
-- command: [docker, run, --net, testbridge-$UNIQUE-id, --name, some-memcached-$UNIQUE-id, -d, '$IMAGE']
+- command: [docker, run, -e, 'MEMCACHED_PROMETHEUS_ENABLED=true', --net, testbridge-$UNIQUE-id, --name, some-memcached-$UNIQUE-id, -d, '$IMAGE']
 - command: [docker, run, --net, testbridge-$UNIQUE-id, --name, external-container-$UNIQUE-id, -dt, debian]
 - command: [sleep, 30s]
 - command: [docker, exec, external-container-$UNIQUE-id, apt-get, update]
-- command: [docker, exec, external-container-$UNIQUE-id, apt-get, install, netcat, -y]
+- command: [docker, exec, external-container-$UNIQUE-id, apt-get, install, netcat, curl, -y]
 
 teardown:
 - command: [docker, rm, -f, some-memcached-$UNIQUE-id]
@@ -37,3 +37,8 @@ tests:
   expect:
     stdout:
       equals: "STORED\r\nVALUE bar 0 9\r\nsome text\r\nEND"
+- name: Test Prometheus metrics
+  command: [curl, 'http://some-memcached-$UNIQUE-id:9150/metrics']
+  expect:
+    stdout:
+      matches: '(?m)^memcached_up 1$'

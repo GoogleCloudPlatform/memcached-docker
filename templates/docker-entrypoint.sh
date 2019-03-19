@@ -32,4 +32,10 @@ if [ "${1#-}" != "$1" ]; then
 	set -- memcached "$@"
 fi
 
+if [ "$1" = 'memcached' ]; then
+	: ${MEMCACHED_PROMETHEUS_ENABLED='false'}
+	if [ "${MEMCACHED_PROMETHEUS_ENABLED}" = 'true' ]; then
+		memcached_exporter &
+	fi
+fi
 exec "$@"
