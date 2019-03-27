@@ -137,5 +137,18 @@ taskGroups:
 
 portReference:
   ports:
+  - port: '9150'
+    description: Prometheus plugin port.
   - port: '11211'
-    description: Memcached port
+    description: Memcached port.
+
+environmentVariableReference:
+  variables:
+  - name: MEMCACHED_PROMETHEUS_ENABLED
+    description: >-
+      Specifies if Prometheus metrics should be visible.
+      <br><br>
+      If set to `true`, this variable adds
+      [Memcached Exporter](https://github.com/prometheus/memcached_exporter) as
+      an additional process running in container. Metrics are available under
+      local endpoint http://localhost:9150/metrics.

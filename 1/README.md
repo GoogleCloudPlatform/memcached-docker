@@ -29,6 +29,7 @@ Dockerfile for this image can be found [here](https://github.com/GoogleCloudPlat
     * [Changing RAM value for item storage](#changing-ram-value-for-item-storage-docker)
 * [References](#references)
   * [Ports](#references-ports)
+  * [Environment Variables](#references-environment-variables)
 
 # <a name="using-kubernetes"></a>Using Kubernetes
 
@@ -232,4 +233,13 @@ These are the ports exposed by the container image.
 
 | **Port** | **Description** |
 |:---------|:----------------|
-| TCP 11211 | Memcached port |
+| TCP 9150 | Prometheus plugin port. |
+| TCP 11211 | Memcached port. |
+
+## <a name="references-environment-variables"></a>Environment Variables
+
+These are the environment variables understood by the container image.
+
+| **Variable** | **Description** |
+|:-------------|:----------------|
+| MEMCACHED_PROMETHEUS_ENABLED | Specifies if Prometheus metrics should be visible. <br><br> If set to `true`, this variable adds [Memcached Exporter](https://github.com/prometheus/memcached_exporter) as an additional process running in container. Metrics are available under local endpoint http://localhost:9150/metrics. |
