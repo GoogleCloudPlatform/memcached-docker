@@ -1,6 +1,6 @@
 FROM gcr.io/google-appengine/debian9 as memcached-builder
-ENV MEMCACHED_VERSION 1.5.13
-ENV MEMCACHED_SHA1 f0ddd566a55fdc5397d458cf3b3806b5cb48bb18
+ENV MEMCACHED_VERSION 1.5.14
+ENV MEMCACHED_SHA1 94592688ae685caf53ab90a821c99f1503bb1018
 
 RUN set -x \
 	&& buildDeps=' \
