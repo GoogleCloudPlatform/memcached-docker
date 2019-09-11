@@ -4,6 +4,8 @@ FROM {{ .From }} as memcached-builder
 ENV MEMCACHED_VERSION {{ $memcached.Version }}
 ENV MEMCACHED_SHA1 {{ $memcached.Sha1 }}
 
+ENV C2D_RELEASE=${MEMCACHED_VERSION}
+
 RUN set -x \
 	&& buildDeps=' \
 		ca-certificates \
