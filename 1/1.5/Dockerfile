@@ -55,6 +55,8 @@ RUN cd /memcached_exporter && \
       wget -O LICENSE.protobuf.gogo https://raw.githubusercontent.com/gogo/protobuf/v1.1.1/LICENSE
 FROM gcr.io/google-appengine/debian9
 
+ENV C2D_RELEASE=1.5.16
+
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
 
