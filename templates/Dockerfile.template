@@ -57,6 +57,8 @@ RUN cd /memcached_exporter && \
       wget -O LICENSE.protobuf.gogo https://raw.githubusercontent.com/gogo/protobuf/v1.1.1/LICENSE
 FROM {{ .From }}
 
+ENV C2D_RELEASE={{ $memcached.Version }}
+
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
 
