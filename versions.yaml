@@ -35,14 +35,12 @@ versions:
       - '1'
       - 'latest'
     from: *from
-    templateArgs:
-      # Reference commit in this repository:
-      # https://github.com/prometheus/memcached_exporter/
-      exporterShaCommit: d7eadc3523ec9731b7865a188093f70140d54a8d
     packages:
       memcached:
         version: '1.5.19'
         sha1: '14e6a02e743838696fcb620edf6a2fd7e60cabec'
+      exporter:
+        version: '0.6.0'
 
 cloudbuild:
   enable_parallel: true
