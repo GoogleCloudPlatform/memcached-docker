@@ -84,9 +84,10 @@ COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/alecthomas/
 COPY --from=prometheus-builder /memcached_exporter/vendor/gopkg.in/alecthomas/kingpin.v2/COPYING /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
 
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN apt-get update && apt-get install -y \
-      libevent-2.0-5 libsasl2-2 --no-install-recommends && \
-          rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libevent-2.0-5 \
+	    libsasl2-2 \
+	  && rm -rf /var/lib/apt/lists/*
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
