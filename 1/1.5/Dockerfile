@@ -1,4 +1,5 @@
 FROM gcr.io/google-appengine/debian9 as memcached-builder
+
 ENV MEMCACHED_VERSION 1.5.19
 ENV MEMCACHED_SHA1 14e6a02e743838696fcb620edf6a2fd7e60cabec
 
@@ -46,13 +47,15 @@ RUN git clone https://github.com/prometheus/memcached_exporter /memcached_export
 RUN wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz && \
       tar -C /usr/local -zxvf go1.12.linux-amd64.tar.gz
 
-RUN cd /memcached_exporter && \
-			export PATH=$PATH:/usr/local/go/bin && \
-			git checkout 1454051534ec5b9c65201907b4c90cabbd862185 && \
-			memcached -u memcache -d && \
-      make
+RUN cd /memcached_exporter \
+	&& export PATH=$PATH:/usr/local/go/bin \
+	&& git checkout d7eadc3523ec9731b7865a188093f70140d54a8d \
+	&& memcached -o modern -u memcache -d \
+    && make precheck style check_license lint unused common-build
+
 RUN cd /memcached_exporter && \
       wget -O LICENSE.protobuf.gogo https://raw.githubusercontent.com/gogo/protobuf/v1.1.1/LICENSE
+
 FROM gcr.io/google-appengine/debian9
 
 ENV C2D_RELEASE=1.5.19
@@ -78,7 +81,6 @@ COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/grobie/gome
 COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/golang/protobuf/LICENSE /opt/memcached_exporter/LICENSE.protobuf.golang
 COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/matttproud/golang_protobuf_extensions/LICENSE /opt/memcached_exporter/LICENSE.golang_protobuf_extensions.matttproud
 COPY --from=prometheus-builder /memcached_exporter/vendor/golang.org/x/sys/LICENSE /opt/memcached_exporter/LICENSE.sys.x
-COPY --from=prometheus-builder /memcached_exporter/vendor/golang.org/x/crypto/LICENSE /opt/memcached_exporter/LICENSE.crypto.x
 COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/alecthomas/units/COPYING /opt/memcached_exporter/COPYING.units.alecthomas
 COPY --from=prometheus-builder /memcached_exporter/vendor/gopkg.in/alecthomas/kingpin.v2/COPYING /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
 

@@ -39,7 +39,6 @@ tests:
     - /opt/memcached_exporter/LICENSE.protobuf.golang
     - /opt/memcached_exporter/LICENSE.golang_protobuf_extensions.matttproud
     - /opt/memcached_exporter/LICENSE.sys.x
-    - /opt/memcached_exporter/LICENSE.crypto.x
     - /opt/memcached_exporter/COPYING.units.alecthomas
     - /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
   expect:
@@ -61,6 +60,5 @@ tests:
         e4c458763cc5f8eaaa6d1e6f6924caa95bdfbe6811d85e4d0bd721acf8d3917ed082621b9de58156b6b86b3f9ceb970a404a03db24a3f59c076fdf5b1992b77e  /opt/memcached_exporter/LICENSE.protobuf.golang
         389080b6132d3eaae780648d6998390d8cc71908561bce09578e27c542aa1a9f3122e01f640c5b01bee73004c23aa4e9f2066fe5ee0ca2072c2420578b28d71f  /opt/memcached_exporter/LICENSE.golang_protobuf_extensions.matttproud
         5bbb2d94184f661d95ac3db758b72a9ce25d409b1179264634bf0612f797424b15a3f6e02069442a75561ca5054e4c4111b158b8dce4d545a7348f6392506a35  /opt/memcached_exporter/LICENSE.sys.x
-        5bbb2d94184f661d95ac3db758b72a9ce25d409b1179264634bf0612f797424b15a3f6e02069442a75561ca5054e4c4111b158b8dce4d545a7348f6392506a35  /opt/memcached_exporter/LICENSE.crypto.x
         6b986d5eb6a82a9f6aebc8bd6e7630a1f8ac8306acf39b805940559dbe08093c8d5b1cad74977bca607d3553293a92e5b47768b940a01dca0d19bc93465d3f90  /opt/memcached_exporter/COPYING.units.alecthomas
         6b986d5eb6a82a9f6aebc8bd6e7630a1f8ac8306acf39b805940559dbe08093c8d5b1cad74977bca607d3553293a92e5b47768b940a01dca0d19bc93465d3f90  /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
