@@ -1,38 +1,39 @@
 FROM gcr.io/google-appengine/debian9 as memcached-builder
-ENV MEMCACHED_VERSION 1.5.16
-ENV MEMCACHED_SHA1 06a9661638cb20232d0ccea088f52ca10b959968
+
+ENV MEMCACHED_VERSION 1.5.19
+ENV MEMCACHED_SHA1 14e6a02e743838696fcb620edf6a2fd7e60cabec
 
 RUN set -x \
-	&& buildDeps=' \
-		ca-certificates \
-		dpkg-dev \
-		gcc \
-		libc6-dev \
-		libevent-dev \
-		libsasl2-dev \
-		make \
-		perl \
-		wget \
-	' \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& mkdir -p /usr/src/memcached_build \
-	&& mkdir -p /usr/src/memcached \
-	&& cd /usr/src/memcached \
-	&& wget -O memcached.tar.gz "https://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" \
-	&& echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - \
-	&& tar -xzf memcached.tar.gz -C /usr/src/memcached_build --strip-components=1 \
-	&& cd /usr/src/memcached_build \
-	&& ./configure \
-		--build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-		--enable-sasl \
-	&& make -j "$(nproc)" \
-	&& make install \
-	&& apt-mark manual \
-		libevent-2.0-5 \
-		libsasl2-2 \
-	&& apt-get purge -y --auto-remove $buildDeps \
-	&& memcached -V
+    && buildDeps=' \
+        ca-certificates \
+        dpkg-dev \
+        gcc \
+        libc6-dev \
+        libevent-dev \
+        libsasl2-dev \
+        make \
+        perl \
+        wget \
+    ' \
+    && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /usr/src/memcached_build \
+    && mkdir -p /usr/src/memcached \
+    && cd /usr/src/memcached \
+    && wget -O memcached.tar.gz "https://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" \
+    && echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - \
+    && tar -xzf memcached.tar.gz -C /usr/src/memcached_build --strip-components=1 \
+    && cd /usr/src/memcached_build \
+    && ./configure \
+        --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
+        --enable-sasl \
+    && make -j "$(nproc)" \
+    && make install \
+    && apt-mark manual \
+        libevent-2.0-5 \
+        libsasl2-2 \
+    && apt-get purge -y --auto-remove $buildDeps \
+    && memcached -V
 
 FROM gcr.io/google-appengine/debian9 as prometheus-builder
 
@@ -42,20 +43,21 @@ RUN groupadd -r memcache && useradd -r -g memcache memcache
 COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
 
 RUN apt-get update && apt-get install git gcc make curl wget tar libevent-2.0-5 libsasl2-2 -y
-RUN git clone https://github.com/prometheus/memcached_exporter /memcached_exporter
+RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.6.0 /memcached_exporter
 RUN wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz && \
       tar -C /usr/local -zxvf go1.12.linux-amd64.tar.gz
 
-RUN cd /memcached_exporter && \
-			export PATH=$PATH:/usr/local/go/bin && \
-			git checkout 1454051534ec5b9c65201907b4c90cabbd862185 && \
-			memcached -u memcache -d && \
-      make
+RUN cd /memcached_exporter \
+    && export PATH=$PATH:/usr/local/go/bin \
+    && memcached -o modern -u memcache -d \
+    && make precheck style check_license lint unused common-build
+
 RUN cd /memcached_exporter && \
       wget -O LICENSE.protobuf.gogo https://raw.githubusercontent.com/gogo/protobuf/v1.1.1/LICENSE
+
 FROM gcr.io/google-appengine/debian9
 
-ENV C2D_RELEASE=1.5.16
+ENV C2D_RELEASE=1.5.19
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
@@ -78,14 +80,14 @@ COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/grobie/gome
 COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/golang/protobuf/LICENSE /opt/memcached_exporter/LICENSE.protobuf.golang
 COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/matttproud/golang_protobuf_extensions/LICENSE /opt/memcached_exporter/LICENSE.golang_protobuf_extensions.matttproud
 COPY --from=prometheus-builder /memcached_exporter/vendor/golang.org/x/sys/LICENSE /opt/memcached_exporter/LICENSE.sys.x
-COPY --from=prometheus-builder /memcached_exporter/vendor/golang.org/x/crypto/LICENSE /opt/memcached_exporter/LICENSE.crypto.x
 COPY --from=prometheus-builder /memcached_exporter/vendor/github.com/alecthomas/units/COPYING /opt/memcached_exporter/COPYING.units.alecthomas
 COPY --from=prometheus-builder /memcached_exporter/vendor/gopkg.in/alecthomas/kingpin.v2/COPYING /opt/memcached_exporter/COPYING.kingpin.v2.alecthomas
 
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN apt-get update && apt-get install -y \
-      libevent-2.0-5 libsasl2-2 --no-install-recommends && \
-		  rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libevent-2.0-5 \
+      libsasl2-2 \
+    && rm -rf /var/lib/apt/lists/*
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
