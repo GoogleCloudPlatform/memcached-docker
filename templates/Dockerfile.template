@@ -89,8 +89,8 @@ COPY --from=prometheus-builder /memcached_exporter/vendor/gopkg.in/alecthomas/ki
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN apt-get update && apt-get install -y --no-install-recommends \
       libevent-2.0-5 \
-	    libsasl2-2 \
-	  && rm -rf /var/lib/apt/lists/*
+      libsasl2-2 \
+    && rm -rf /var/lib/apt/lists/*
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
 
