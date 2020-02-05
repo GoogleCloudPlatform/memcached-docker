@@ -1,7 +1,7 @@
 FROM gcr.io/google-appengine/debian9 as memcached-builder
 
-ENV MEMCACHED_VERSION 1.5.21
-ENV MEMCACHED_SHA1 536842bc4cf4807dca391039d3acb2cc47e4bdd5
+ENV MEMCACHED_VERSION 1.5.22
+ENV MEMCACHED_SHA1 3fe5d3929130e860efcfde18d4d396a29db006b7
 
 RUN set -x \
     && buildDeps=' \
@@ -57,7 +57,7 @@ RUN cd /memcached_exporter && \
 
 FROM gcr.io/google-appengine/debian9
 
-ENV C2D_RELEASE=1.5.21
+ENV C2D_RELEASE=1.5.22
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache

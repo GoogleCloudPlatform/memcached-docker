@@ -30,15 +30,15 @@ versions:
   - dir: '1/1.5'
     repo: memcached1
     tags:
-      - '1.5.21'
+      - '1.5.22'
       - '1.5'
       - '1'
       - 'latest'
     from: *from
     packages:
       memcached:
-        version: '1.5.21'
-        sha1: '536842bc4cf4807dca391039d3acb2cc47e4bdd5'
+        version: '1.5.22'
+        sha1: '3fe5d3929130e860efcfde18d4d396a29db006b7'
       exporter:
         version: '0.6.0'
 
