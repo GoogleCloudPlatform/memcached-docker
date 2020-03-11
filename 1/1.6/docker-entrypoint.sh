@@ -1,3 +1,5 @@
+#!/bin/sh
+#
 # Copyright (c) 2017, Google Inc.
 # All rights reserved.
 #
@@ -21,26 +23,19 @@
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-_variables:
-  from: &from gcr.io/google-appengine/debian9
+set -e
 
-versions:
-  - dir: '1/1.6'
-    repo: memcached1
-    tags:
-      - '1.6.0'
-      - '1.6'
-      - '1'
-      - 'latest'
-    from: *from
-    packages:
-      memcached:
-        version: '1.6.0'
-        sha1: 'fe6ac14e6e98d4b7ff8293cea359b21342bc9c68'
-      exporter:
-        version: '0.6.0'
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- memcached "$@"
+fi
 
-cloudbuild:
-  enable_parallel: true
+if [ "$1" = 'memcached' ]; then
+	: ${MEMCACHED_PROMETHEUS_ENABLED='false'}
+	if [ "${MEMCACHED_PROMETHEUS_ENABLED}" = 'true' ]; then
+		memcached_exporter &
+	fi
+fi
+exec "$@"
