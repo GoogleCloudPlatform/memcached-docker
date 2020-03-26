@@ -1,5 +1,6 @@
-# Copyright 2020 Google LLC
+#!/bin/sh
 #
+# Copyright (c) 2017, Google Inc.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -9,7 +10,7 @@
 #     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
-#     * Neither the name of the copyright holder nor the
+#     * Neither the name of Google Inc. nor the
 #       names of its contributors may be used to endorse or promote products
 #       derived from this software without specific prior written permission.
 #
@@ -24,39 +25,17 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+set -e
 
-cloudbuild:
-  enable_parallel: true
-versions:
-- dir: 1/debian9/1.6
-  from: gcr.io/google-appengine/debian9
-  packages:
-    exporter:
-      version: 0.6.0
-    memcached:
-      sha1: a6a07f0433adaa13a3cafdf8c26acb640cdd001f
-      version: 1.6.2
-  repo: memcached1
-  tags:
-  - 1.6.2-debian9
-  - 1.6-debian9
-  - 1-debian9
-  - 1.6.2
-  - '1.6'
-  - '1'
-  - latest
-- dir: 1/debian9/1.5
-  from: gcr.io/google-appengine/debian9
-  packages:
-    exporter:
-      version: 0.6.0
-    memcached:
-      sha1: 3fe5d3929130e860efcfde18d4d396a29db006b7
-      version: 1.5.22
-  repo: memcached1
-  tags:
-  - 1.5.22-debian9
-  - 1.5-debian9
-  - 1.5.22
-  - '1.5'
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- memcached "$@"
+fi
 
+if [ "$1" = 'memcached' ]; then
+	: ${MEMCACHED_PROMETHEUS_ENABLED='false'}
+	if [ "${MEMCACHED_PROMETHEUS_ENABLED}" = 'true' ]; then
+		memcached_exporter &
+	fi
+fi
+exec "$@"
