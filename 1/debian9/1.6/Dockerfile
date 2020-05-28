@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/debian9 as memcached-builder
+FROM marketplace.gcr.io/google/debian9 as memcached-builder
 
 ENV MEMCACHED_VERSION 1.6.6
 ENV MEMCACHED_SHA1 d8895b12dc9fc82b389f1713e2c09cc6ca3d03e4
@@ -35,7 +35,7 @@ RUN set -x \
     && apt-get purge -y --auto-remove $buildDeps \
     && memcached -V
 
-FROM gcr.io/google-appengine/debian9 as prometheus-builder
+FROM marketplace.gcr.io/google/debian9 as prometheus-builder
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
@@ -55,7 +55,7 @@ RUN cd /memcached_exporter \
 RUN cd /memcached_exporter && \
       wget -O LICENSE.protobuf.gogo https://raw.githubusercontent.com/gogo/protobuf/v1.1.1/LICENSE
 
-FROM gcr.io/google-appengine/debian9
+FROM marketplace.gcr.io/google/debian9
 
 ENV C2D_RELEASE=1.6.6
 

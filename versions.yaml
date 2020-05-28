@@ -29,7 +29,7 @@ cloudbuild:
   enable_parallel: true
 versions:
 - dir: 1/debian9/1.6
-  from: gcr.io/google-appengine/debian9
+  from: marketplace.gcr.io/google/debian9
   packages:
     exporter:
       version: 0.6.0
@@ -46,7 +46,7 @@ versions:
   - '1'
   - latest
 - dir: 1/debian9/1.5
-  from: gcr.io/google-appengine/debian9
+  from: marketplace.gcr.io/google/debian9
   packages:
     exporter:
       version: 0.6.0
