@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/debian9 as memcached-builder
 
-ENV MEMCACHED_VERSION 1.6.6
-ENV MEMCACHED_SHA1 d8895b12dc9fc82b389f1713e2c09cc6ca3d03e4
+ENV MEMCACHED_VERSION 1.6.7
+ENV MEMCACHED_SHA1 49336bb0a4b7ad296422b08148581ed54edf32d0
 
 RUN set -x \
     && buildDeps=' \
@@ -43,7 +43,7 @@ RUN groupadd -r memcache && useradd -r -g memcache memcache
 COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
 
 RUN apt-get update && apt-get install git gcc make curl wget tar libevent-2.0-5 libsasl2-2 -y
-RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.6.0 /memcached_exporter
+RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.7.0 /memcached_exporter
 RUN wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz && \
       tar -C /usr/local -zxvf go1.12.linux-amd64.tar.gz
 
@@ -57,7 +57,7 @@ RUN cd /memcached_exporter && \
 
 FROM marketplace.gcr.io/google/debian9
 
-ENV C2D_RELEASE=1.6.6
+ENV C2D_RELEASE=1.6.7
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
