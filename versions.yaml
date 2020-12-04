@@ -34,14 +34,14 @@ versions:
     exporter:
       version: 0.6.0
     memcached:
-      sha1: 8f3efd851efc5b822bd991b93d06a271b2fac052
-      version: 1.6.8
+      sha1: 42ae062094fdf083cfe7b21ff377c781011c2be1
+      version: 1.6.9
   repo: memcached1
   tags:
-  - 1.6.8-debian9
+  - 1.6.9-debian9
   - 1.6-debian9
   - 1-debian9
-  - 1.6.8
+  - 1.6.9
   - '1.6'
   - '1'
   - latest
