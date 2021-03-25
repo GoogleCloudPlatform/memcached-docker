@@ -32,7 +32,7 @@ versions:
   from: marketplace.gcr.io/google/debian9
   packages:
     exporter:
-      version: 0.6.0
+      version: 0.7.0
     memcached:
       sha1: 42ae062094fdf083cfe7b21ff377c781011c2be1
       version: 1.6.9
@@ -49,7 +49,7 @@ versions:
   from: marketplace.gcr.io/google/debian9
   packages:
     exporter:
-      version: 0.6.0
+      version: 0.7.0
     memcached:
       sha1: 3fe5d3929130e860efcfde18d4d396a29db006b7
       version: 1.5.22
