@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # All rights reserved.
 #
@@ -45,18 +45,4 @@ versions:
   - '1.6'
   - '1'
   - latest
-- dir: 1/debian9/1.5
-  from: marketplace.gcr.io/google/debian9
-  packages:
-    exporter:
-      version: 0.6.0
-    memcached:
-      sha1: 3fe5d3929130e860efcfde18d4d396a29db006b7
-      version: 1.5.22
-  repo: memcached1
-  tags:
-  - 1.5.22-debian9
-  - 1.5-debian9
-  - 1.5.22
-  - '1.5'
 
