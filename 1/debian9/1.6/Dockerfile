@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/debian9 as memcached-builder
 
-ENV MEMCACHED_VERSION 1.6.12
-ENV MEMCACHED_SHA1 40d43e98f149e13e6c81eee813e6734f23413a01
+ENV MEMCACHED_VERSION 1.6.13
+ENV MEMCACHED_SHA1 b9da57ba63ba8de8a980fe0fe2fedc8d59e1dfe3
 
 RUN set -x \
     && buildDeps=' \
@@ -57,7 +57,7 @@ RUN cd /memcached_exporter && \
 
 FROM marketplace.gcr.io/google/debian9
 
-ENV C2D_RELEASE=1.6.12
+ENV C2D_RELEASE=1.6.13
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache

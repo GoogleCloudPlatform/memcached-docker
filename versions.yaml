@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # All rights reserved.
 #
@@ -34,14 +34,14 @@ versions:
     exporter:
       version: 0.6.0
     memcached:
-      sha1: 40d43e98f149e13e6c81eee813e6734f23413a01
-      version: 1.6.12
+      sha1: b9da57ba63ba8de8a980fe0fe2fedc8d59e1dfe3
+      version: 1.6.13
   repo: memcached1
   tags:
-  - 1.6.12-debian9
+  - 1.6.13-debian9
   - 1.6-debian9
   - 1-debian9
-  - 1.6.12
+  - 1.6.13
   - '1.6'
   - '1'
   - latest
