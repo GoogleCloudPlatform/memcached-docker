@@ -32,16 +32,16 @@ versions:
   from: marketplace.gcr.io/google/debian9
   packages:
     exporter:
-      version: 0.6.0
+      version: 0.9.0
     memcached:
-      sha1: b9da57ba63ba8de8a980fe0fe2fedc8d59e1dfe3
-      version: 1.6.13
+      sha256: 54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3
+      version: 1.6.14
   repo: memcached1
   tags:
-  - 1.6.13-debian9
+  - 1.6.14-debian9
   - 1.6-debian9
   - 1-debian9
-  - 1.6.13
+  - 1.6.14
   - '1.6'
   - '1'
   - latest
