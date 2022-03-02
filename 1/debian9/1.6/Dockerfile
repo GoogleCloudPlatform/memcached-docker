@@ -1,7 +1,7 @@
 FROM marketplace.gcr.io/google/debian9 as memcached-builder
 
 ENV MEMCACHED_VERSION 1.6.14
-ENV MEMCACHED_SHA1 be64c11d34f04bd1855100b8b5ad9ae8b45e0ab0
+ENV MEMCACHED_SHA256 54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3
 
 RUN set -x \
     && buildDeps=' \
@@ -21,7 +21,7 @@ RUN set -x \
     && mkdir -p /usr/src/memcached \
     && cd /usr/src/memcached \
     && wget -O memcached.tar.gz "https://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" \
-    && echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - \
+    && echo "$MEMCACHED_SHA256  memcached.tar.gz" | sha256sum -c - \
     && tar -xzf memcached.tar.gz -C /usr/src/memcached_build --strip-components=1 \
     && cd /usr/src/memcached_build \
     && ./configure \

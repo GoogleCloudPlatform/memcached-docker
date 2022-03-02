@@ -4,7 +4,7 @@ FROM {{ .From }} as memcached-builder
 {{ $exporter := index .Packages "exporter" -}}
 
 ENV MEMCACHED_VERSION {{ $memcached.Version }}
-ENV MEMCACHED_SHA1 {{ $memcached.Sha1 }}
+ENV MEMCACHED_SHA256 {{ $memcached.Sha256 }}
 
 RUN set -x \
     && buildDeps=' \
@@ -24,7 +24,7 @@ RUN set -x \
     && mkdir -p /usr/src/memcached \
     && cd /usr/src/memcached \
     && wget -O memcached.tar.gz "https://memcached.org/files/memcached-$MEMCACHED_VERSION.tar.gz" \
-    && echo "$MEMCACHED_SHA1  memcached.tar.gz" | sha1sum -c - \
+    && echo "$MEMCACHED_SHA256  memcached.tar.gz" | sha256sum -c - \
     && tar -xzf memcached.tar.gz -C /usr/src/memcached_build --strip-components=1 \
     && cd /usr/src/memcached_build \
     && ./configure \
