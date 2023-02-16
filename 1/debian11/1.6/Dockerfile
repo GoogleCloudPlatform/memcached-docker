@@ -1,9 +1,6 @@
-FROM {{ .From }} as memcached-builder
+FROM marketplace.gcr.io/google/c2d-debian11 as memcached-builder
 
-{{ $memcached := index .Packages "memcached" -}}
-{{ $exporter := index .Packages "exporter" -}}
-
-ENV MEMCACHED_VERSION {{ $memcached.Version }}
+ENV MEMCACHED_VERSION 1.6.18
 
 RUN set -x \
     && buildDeps=' \
@@ -38,7 +35,7 @@ RUN set -x \
     && make install \
     && memcached -V
 
-FROM {{ .From }} as prometheus-builder
+FROM marketplace.gcr.io/google/c2d-debian11 as prometheus-builder
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
@@ -46,7 +43,7 @@ RUN groupadd -r memcache && useradd -r -g memcache memcache
 COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
 
 RUN apt-get update && apt-get install gcc make wget tar libevent-2.1-7 libsasl2-2 -y
-RUN git clone https://github.com/prometheus/memcached_exporter --branch=v{{ $exporter.Version }} /memcached_exporter
+RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.11.1 /memcached_exporter
 RUN wget https://dl.google.com/go/go1.18.linux-amd64.tar.gz && \
       tar -C /usr/local -zxvf go1.18.linux-amd64.tar.gz
 
@@ -64,9 +61,9 @@ RUN mkdir /usr/share/external-licenses \
     && /usr/local/go/bin/go mod vendor \
     && find ./vendor/ -name 'LICENS*' -exec cp --parents "{}" /usr/share/external-licenses/ \;
 
-FROM {{ .From }}
+FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE={{ $memcached.Version }}
+ENV C2D_RELEASE=1.6.18
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
