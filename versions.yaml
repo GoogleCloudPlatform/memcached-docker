@@ -28,20 +28,19 @@
 cloudbuild:
   enable_parallel: true
 versions:
-- dir: 1/debian9/1.6
-  from: marketplace.gcr.io/google/debian9
+- dir: 1/debian11/1.6
+  from: marketplace.gcr.io/google/c2d-debian11
   packages:
     exporter:
-      version: 0.6.0
+      version: 0.11.1
     memcached:
-      sha256: 2055e373613d8fc21529aff9f0adce3e23b9ce01ba0478d30e7941d9f2bd1224
-      version: 1.6.17
+      version: 1.6.18
   repo: memcached1
   tags:
-  - 1.6.17-debian9
+  - 1.6.18-debian9
   - 1.6-debian9
   - 1-debian9
-  - 1.6.17
+  - 1.6.18
   - '1.6'
   - '1'
   - latest
