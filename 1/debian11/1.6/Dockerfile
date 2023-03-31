@@ -43,7 +43,7 @@ RUN groupadd -r memcache && useradd -r -g memcache memcache
 COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
 
 RUN apt-get update && apt-get install gcc make wget tar libevent-2.1-7 libsasl2-2 -y
-RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.11.1 /memcached_exporter
+RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.6.0 /memcached_exporter
 RUN wget https://dl.google.com/go/go1.18.linux-amd64.tar.gz && \
       tar -C /usr/local -zxvf go1.18.linux-amd64.tar.gz
 
