@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # All rights reserved.
 #
@@ -37,9 +37,9 @@ versions:
       version: 1.6.18
   repo: memcached1
   tags:
-  - 1.6.18-debian9
-  - 1.6-debian9
-  - 1-debian9
+  - 1.6.18-debian11
+  - 1.6-debian11
+  - 1-debian11
   - 1.6.18
   - '1.6'
   - '1'
