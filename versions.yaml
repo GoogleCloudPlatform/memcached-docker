@@ -34,14 +34,13 @@ versions:
     exporter:
       version: 0.11.1
     memcached:
-      version: 1.6.18
+      version: 1.6.20
   repo: memcached1
   tags:
-  - 1.6.18-debian11
+  - 1.6.20-debian11
   - 1.6-debian11
   - 1-debian11
-  - 1.6.18
+  - 1.6.20
   - '1.6'
   - '1'
   - latest
-
