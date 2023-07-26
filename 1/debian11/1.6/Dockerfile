@@ -1,6 +1,6 @@
 FROM marketplace.gcr.io/google/c2d-debian11 as memcached-builder
 
-ENV MEMCACHED_VERSION 1.6.18
+ENV MEMCACHED_VERSION 1.6.20
 
 RUN set -x \
     && buildDeps=' \
@@ -63,7 +63,7 @@ RUN mkdir /usr/share/external-licenses \
 
 FROM marketplace.gcr.io/google/c2d-debian11
 
-ENV C2D_RELEASE=1.6.18
+ENV C2D_RELEASE=1.6.20
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
