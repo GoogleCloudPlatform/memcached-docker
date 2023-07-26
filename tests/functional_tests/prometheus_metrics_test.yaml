@@ -18,7 +18,7 @@ setup:
 - command: [docker, run, --net, testbridge-$UNIQUE-id, --name, external-container-$UNIQUE-id, -dt, debian]
 - command: [sleep, 30s]
 - command: [docker, exec, external-container-$UNIQUE-id, apt-get, update]
-- command: [docker, exec, external-container-$UNIQUE-id, apt-get, install, netcat, curl, -y]
+- command: [docker, exec, external-container-$UNIQUE-id, apt-get, install, netcat-traditional, curl, -y]
 
 teardown:
 - command: [docker, rm, -f, some-memcached-$UNIQUE-id]
