@@ -3,14 +3,9 @@ FROM marketplace.gcr.io/google/c2d-debian11 as ospo
 # Download Licenses
 COPY components.csv /components.csv
 
-<<<<<<< HEAD
-RUN apt update && apt -y install ca-certificates \
-    && curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
-=======
 RUN apt update && apt -y install ca-certificates
 
 RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
->>>>>>> a0f90ccb3aa0aee354e8bbae72d0fa6229940a6f
 		&& chmod +x /download-licenses.sh
 
 RUN mkdir -p /usr/src/licenses \
