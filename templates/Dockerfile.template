@@ -3,7 +3,8 @@ FROM {{ .From }} as ospo
 # Download Licenses
 COPY components.csv /components.csv
 
-RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+RUN apt update && apt -y install ca-certificates \
+    && curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& chmod +x /download-licenses.sh
 
 RUN mkdir -p /usr/src/licenses \
@@ -13,6 +14,7 @@ FROM {{ .From }} as memcached-builder
 
 {{ $memcached := index .Packages "memcached" -}}
 {{ $exporter := index .Packages "exporter" -}}
+{{ $golang := index .Packages "golang" -}}
 
 ENV MEMCACHED_VERSION {{ $memcached.Version }}
 
@@ -58,8 +60,8 @@ COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
 
 RUN apt-get update && apt-get install gcc make wget tar libevent-2.1-7 libsasl2-2 -y
 RUN git clone https://github.com/prometheus/memcached_exporter --branch=v{{ $exporter.Version }} /memcached_exporter
-RUN wget https://dl.google.com/go/go1.18.linux-amd64.tar.gz && \
-      tar -C /usr/local -zxvf go1.18.linux-amd64.tar.gz
+RUN wget https://dl.google.com/go/go{{ $golang.Version }}.linux-amd64.tar.gz && \
+      tar -C /usr/local -zxvf go{{ $golang.Version }}.linux-amd64.tar.gz
 
 RUN cd /memcached_exporter \
     && export PATH=$PATH:/usr/local/go/bin \

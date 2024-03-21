@@ -33,15 +33,16 @@ versions:
   packages:
     exporter:
       version: 0.14.0
+    golang:
+      version: 1.22.1
     memcached:
-      version: 1.6.23
+      version: 1.6.25
   repo: memcached1
   tags:
-  - 1.6.23-debian11
+  - 1.6.25-debian11
   - 1.6-debian11
   - 1-debian11
-  - 1.6.23
+  - 1.6.25
   - '1.6'
   - '1'
   - latest
-

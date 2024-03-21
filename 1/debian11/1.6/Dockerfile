@@ -3,7 +3,8 @@ FROM marketplace.gcr.io/google/c2d-debian11 as ospo
 # Download Licenses
 COPY components.csv /components.csv
 
-RUN curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
+RUN apt update && apt -y install ca-certificates \
+    && curl -o /download-licenses.sh -L https://raw.githubusercontent.com/GoogleCloudPlatform/click-to-deploy/master/scripts/download-licenses.sh \
 		&& chmod +x /download-licenses.sh
 
 RUN mkdir -p /usr/src/licenses \
@@ -11,7 +12,7 @@ RUN mkdir -p /usr/src/licenses \
 
 FROM marketplace.gcr.io/google/c2d-debian11 as memcached-builder
 
-ENV MEMCACHED_VERSION 1.6.23
+ENV MEMCACHED_VERSION 1.6.25
 
 RUN set -x \
     && buildDeps=' \
@@ -55,8 +56,8 @@ COPY --from=memcached-builder /usr/local/bin/memcached /usr/local/bin/memcached
 
 RUN apt-get update && apt-get install gcc make wget tar libevent-2.1-7 libsasl2-2 -y
 RUN git clone https://github.com/prometheus/memcached_exporter --branch=v0.14.0 /memcached_exporter
-RUN wget https://dl.google.com/go/go1.18.linux-amd64.tar.gz && \
-      tar -C /usr/local -zxvf go1.18.linux-amd64.tar.gz
+RUN wget https://dl.google.com/go/go1.22.1.linux-amd64.tar.gz && \
+      tar -C /usr/local -zxvf go1.22.1.linux-amd64.tar.gz
 
 RUN cd /memcached_exporter \
     && export PATH=$PATH:/usr/local/go/bin \
@@ -76,7 +77,7 @@ FROM marketplace.gcr.io/google/c2d-debian11
 
 COPY --from=ospo /usr/src /usr/src
 
-ENV C2D_RELEASE=1.6.23
+ENV C2D_RELEASE=1.6.25
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r memcache && useradd -r -g memcache memcache
