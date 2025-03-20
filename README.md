@@ -1,11 +1,4 @@
 memcached-docker
 ============
 
-Dockerfile source for memcached [docker](https://docker.io) image.
-
-# Upstream
-This source repo was originally copied from:
-https://github.com/docker-library/memcached
-
-# Disclaimer
-This is not an official Google product.
+## This repository has been deprecated. Check the [latest commit tree](https://github.com/GoogleCloudPlatform/memcached-docker/tree/5e8960ad01cc38f73381d700b77c0e614aaccb35).
